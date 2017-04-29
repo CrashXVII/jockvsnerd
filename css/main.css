@@ -1,0 +1,86 @@
+h1 {
+	text-align: center;
+	font-family: 'Freckle Face', cursive;
+	font-size: 3em;
+}
+
+.wrapper {
+	text-align: center;
+	max-width: 80%;
+	margin: 0 auto;
+
+}
+
+/********* Scoreboard styles *********/
+
+.scores {
+	display: inline-block;
+}
+
+.score_number {
+	border: 4px ridge #ACA8A8;
+	text-align: center;
+	font-size: 5em;
+}
+
+.spacer {
+	padding: 0 10px;
+}
+
+
+/*****Question section styles *****/
+
+#question {
+	font-size: 2.5em;
+}
+
+#question_subtext, p.spacer {
+	font-size: 1.7em;
+}
+
+
+/**** Button styles ****/
+
+button {
+	display: inline-block;
+  	padding: 6px 12px;
+  	margin-bottom: 0;
+  	font-size: 1.5em;
+  	font-weight: normal;
+  	line-height: 1.42857143;
+  	text-align: center;
+  	white-space: nowrap;
+  	vertical-align: middle;
+  		-ms-touch-action: manipulation;
+  	    touch-action: manipulation;
+  	cursor: pointer;
+  	-webkit-user-select: none;
+     -moz-user-select: none;
+      -ms-user-select: none;
+  	        user-select: none;
+  border: 1px solid transparent;
+  border-radius: 4px;
+}
+
+button:hover, button:focus {
+	background-color: #333;
+	text-decoration: none;
+	color: #fff;
+}
+
+#quiz_start {
+	background-color: #D61B1B;
+	color: #FFFFFF;
+	font-family: cursive;
+	font-size: 60px;
+}
+
+
+
+.quizButton, .generatedButton {
+	background-color: #718FEF;
+}
+
+.generatedButton {
+	margin: 0 0.5em;
+}
