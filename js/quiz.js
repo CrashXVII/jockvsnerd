@@ -99,10 +99,7 @@ $("#quiz_start").click(function() {
 
 });
 
-//Prototype functions (Hey Joe! Why do these have to be above the QuizUI?)
-
-
-//check to see if all questions have been used.
+//
 
 Quiz.prototype.guess = function(answer) {
 	if(currentPlayer === "paul") {
@@ -122,7 +119,6 @@ Quiz.prototype.guess = function(answer) {
 
 }
 
-// get
 Quiz.prototype.getCurrentQuestion = function(){
 	return this.questions[this.quizIndex]; 
 };
