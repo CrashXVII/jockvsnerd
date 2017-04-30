@@ -132,11 +132,21 @@ Question.prototype.isCorrectAnswer = function(choice){
 	return this.correctAnswer === choice;
 };
 
+Quiz.prototype.hasQuizEnded = function() {
+	if(quiz.questions.length <= quiz.quizIndex) {
+		return true;
+	}
+}
 // function for checking answers, awarding score, displaying next question, ect.
 var QuizUI = {
 	displayNext: function() {
-		this.displayQuestion();
-		this.displayChoices();
+		if(quiz.hasQuizEnded()) {
+			this.populateIdWithHTML("question", "Game over man!") //TODO: Set this to a proper end of game screen, declare winner and such?
+			$("#btn_div").hide();
+		} else {
+			this.displayQuestion();
+			this.displayChoices();
+		}
 	},
 	displayQuestion: function() {
 		this.populateIdWithHTML("question", quiz.getCurrentQuestion().text);
