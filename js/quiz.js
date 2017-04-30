@@ -17,7 +17,7 @@ function Question(text, choices, correctAnswer, afterText, whoItFor) {
   this.choices = choices;
   this.correctAnswer = correctAnswer;
   this.afterText = afterText;
-  this.whoItFor = whoItFor;
+  this.whoItFor = whoItFor; // use lower case, "matt" or "paul" in the form for creating new quizzes
 }
 
 
@@ -59,7 +59,7 @@ function sortByName() {
 
 // formatting of the questions
 var quizQuestions = [ 
-	new Question("Does this work?", ["Yes", "No"], "Yes", "YAR! HERE BE THE SUBTEXT!", "paul"),
+	new Question("Does this work?", ["Yes", "No", "Maybe?"], "Yes", "YAR! HERE BE THE SUBTEXT!", "paul"),
 	new Question("Does it really though?", ["No", "Yes"], "Yes", "YAR! HERE BE THE SUBTEXT!", "matt"),
 	new Question("No, but really, how is this thing?", ["Good!", "Borked!"], "Good!", "Yar! HERE BE THE SUBTEXT!", "matt"),
 	new Question("More example questions??", ["Yes, Test it out man!", "Nah, we're done"], "Yes, Test it out man!", "Yar! HERE BE THE SUBTEXT!", "paul"),
@@ -83,28 +83,13 @@ $('.question_section').hide();
 $('#question_subtext').hide();
 
 
-function hidePlayerSelect() {
-	$('#hide_on_start').hide();
-}
-// buttons to pick starting player
-$('#mattStart').click(function() {
-	currentPlayer = "matt";
+// button to pick starting player
+$('.player-select').click(function() {
+	currentPlayer = this.textContent.toLowerCase();
 	sortByName();
-	hidePlayerSelect();
+	$('#hide_on_start').hide(); //Hide the start button
 	QuizUI.displayNext();
 });
-
-$('#paulStart').click(function() {
-	currentPlayer = "paul";
-	sortByName();
-	hidePlayerSelect();
-	QuizUI.displayNext();
-});
-
-
-// Question choice buttons
-
-
 
 // Quiz start button
 $("#quiz_start").click(function() {
@@ -115,6 +100,9 @@ $("#quiz_start").click(function() {
 });
 
 //Prototype functions (Hey Joe! Why do these have to be above the QuizUI?)
+
+
+//check to see if all questions have been used.
 
 Quiz.prototype.guess = function(answer) {
 	if(currentPlayer === "paul") {
@@ -134,6 +122,7 @@ Quiz.prototype.guess = function(answer) {
 
 }
 
+// get
 Quiz.prototype.getCurrentQuestion = function(){
 	return this.questions[this.quizIndex]; 
 };
