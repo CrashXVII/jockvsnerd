@@ -53,7 +53,6 @@ function sortByName() {
 		}
 	}
 	
-	
 
 
 
@@ -79,8 +78,7 @@ const paulScoreDisplay = document.getElementById('paul_score');
 const mattScoreDisplay = document.getElementById('matt_score');
 
 // Hiding question display until quiz starts. Better to create them in javascript on the fly?
-$('.question_section').hide();
-$('#question_subtext').hide();
+$('.question_section, #question_subtext').hide();
 
 
 // button to pick starting player
