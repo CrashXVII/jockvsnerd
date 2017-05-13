@@ -112,8 +112,8 @@ Quiz.prototype.guess = function(answer) {
 		console.log("Error player select, from quiz.guess");
 	}
 	quiz.quizIndex++;
-	paulScoreDisplay.innerHTML = quiz.paulScore;
-	mattScoreDisplay.innerHTML = quiz.mattScore;
+	paulScoreDisplay.innerText = quiz.paulScore;
+	mattScoreDisplay.innerText = quiz.mattScore;
 
 }
 
@@ -131,11 +131,25 @@ Quiz.prototype.hasQuizEnded = function() {
 		return true;
 	}
 }
+
+Quiz.prototype.generateEndGameScreen = function() {
+	var gameOverText = "";
+	if(quiz.paulScore > quiz.mattScore) {
+		gameOverText = "Game over, Paul wins!!";
+	} else if(quiz.mattScore > quiz.paulScore) {
+		gameOverText = "Game over, Matt wins!!";
+	} else {
+		gameOverText = "Apparently I messed something up. Game over, I guess.";
+		console.log("Error at quiz.prototype.generateEndGameScreen");
+	}
+
+	return gameOverText;
+}
 // function for checking answers, awarding score, displaying next question, ect.
 var QuizUI = {
 	displayNext: function() {
 		if(quiz.hasQuizEnded()) {
-			this.populateIdWithHTML("question", "Game over man!") //TODO: Set this to a proper end of game screen, declare winner and such?
+			this.populateIdWithHTML("question", quiz.generateEndGameScreen());
 			$("#btn_div").hide();
 		} else {
 			this.displayQuestion();
