@@ -25,7 +25,7 @@ function Question(text, choices, correctAnswer, afterText, whoItFor) {
 // sorting based on who goes first. Puts the all the first players questions to the top of the quiz.questionaire so that they come up first while playing.
 
 function sortByName() {
-// Change this to the .filter function (currentplayer) if(quiz.whoItFor === currentplayer) {return true;} Have to set up a variable to store the new array and reference that for QuizUI?
+// TODO? Change this to the .filter function (currentplayer) if(quiz.whoItFor === currentplayer) {return true;} Have to set up a variable to store the new array and reference that for QuizUI?
 	if(currentPlayer === "matt") {
 		quiz.questions.sort(function (a, b) {
 			var q1 = a.whoItFor.toUpperCase();
@@ -73,12 +73,12 @@ var quiz = new Quiz(quizQuestions);
 
 //Stores current player selection, used for score and such.
 
-var currentPlayer;
+var currentPlayer = "";
 const paulScoreDisplay = document.getElementById('paul_score');
 const mattScoreDisplay = document.getElementById('matt_score');
 
 // Hiding question display until quiz starts. Better to create them in javascript on the fly?
-$('.question_section, #question_subtext').hide();
+$('.question_section, #question_afterText').hide();
 
 
 // button to pick starting player
@@ -117,6 +117,19 @@ Quiz.prototype.guess = function(answer) {
 
 }
 
+Quiz.prototype.playerSwitchCheck = function() {
+	var playerCheck = quiz.questions[quiz.quizIndex].whoItFor;
+	if(playerCheck != currentPlayer) {
+		if(currentPlayer === "matt") {
+			currentPlayer = "paul";
+		} else if(currentPlayer === "paul") {
+			currentPlayer = "matt";
+		} else {
+			console.log("Error at player switch");
+		}
+	}
+}
+
 Quiz.prototype.getCurrentQuestion = function(){
 	return this.questions[this.quizIndex]; 
 };
@@ -138,6 +151,8 @@ Quiz.prototype.generateEndGameScreen = function() {
 		gameOverText = "Game over, Paul wins!!";
 	} else if(quiz.mattScore > quiz.paulScore) {
 		gameOverText = "Game over, Matt wins!!";
+	} else if(quiz.mattScore = quiz.paulScore) {
+		gameOverText = "Tie game! Jacob wins!!";
 	} else {
 		gameOverText = "Apparently I messed something up. Game over, I guess.";
 		console.log("Error at quiz.prototype.generateEndGameScreen");
@@ -148,10 +163,12 @@ Quiz.prototype.generateEndGameScreen = function() {
 // function for checking answers, awarding score, displaying next question, ect.
 var QuizUI = {
 	displayNext: function() {
+		
 		if(quiz.hasQuizEnded()) {
 			this.populateIdWithHTML("question", quiz.generateEndGameScreen());
 			$("#btn_div").hide();
 		} else {
+			quiz.playerSwitchCheck();
 			this.displayQuestion();
 			this.displayChoices();
 		}
