@@ -57,7 +57,7 @@ function sortByName() {
 
 
 // formatting of the questions
-var quizQuestions = [ 
+const quizQuestions = [ 
 	new Question("Does this work?", ["Yes", "No", "Maybe?"], "Yes", "YAR! HERE BE THE SUBTEXT!", "paul"),
 	new Question("Does it really though?", ["No", "Yes"], "Yes", "YAR! HERE BE THE SUBTEXT!", "matt"),
 	new Question("No, but really, how is this thing?", ["Good!", "Borked!"], "Good!", "Yar! HERE BE THE SUBTEXT!", "matt"),
@@ -66,14 +66,14 @@ var quizQuestions = [
 	new Question("6th time's the charm, right?", ["Seems good for now.", "Go to hell, jackass."], "Seems good for now.", "Yar! HERE BE THE SUBTEXT!", "matt")
 ];
 
-var quiz = new Quiz(quizQuestions);
+const quiz = new Quiz(quizQuestions);
 
 
 
 
 //Stores current player selection, used for score and such.
 
-var currentPlayer = "";
+let currentPlayer = "";
 const paulScoreDisplay = document.getElementById('paul_score');
 const mattScoreDisplay = document.getElementById('matt_score');
 
@@ -118,7 +118,7 @@ Quiz.prototype.guess = function(answer) {
 }
 
 Quiz.prototype.playerSwitchCheck = function() {
-	var playerCheck = quiz.questions[quiz.quizIndex].whoItFor;
+	const playerCheck = quiz.questions[quiz.quizIndex].whoItFor;
 	if(playerCheck != currentPlayer) {
 		if(currentPlayer === "matt") {
 			currentPlayer = "paul";
@@ -161,8 +161,8 @@ Quiz.prototype.generateEndGameScreen = function() {
 	return gameOverText;
 }
 // function for checking answers, awarding score, displaying next question, ect.
-var QuizUI = {
-	displayNext: function() {
+const QuizUI = {
+	displayNext() {
 		
 		if(quiz.hasQuizEnded()) {
 			this.populateIdWithHTML("question", quiz.generateEndGameScreen());
@@ -173,13 +173,13 @@ var QuizUI = {
 			this.displayChoices();
 		}
 	},
-	displayQuestion: function() {
+	displayQuestion() {
 		this.populateIdWithHTML("question", quiz.getCurrentQuestion().text);
 	},
-	displayChoices: function() {
-		var choices = quiz.getCurrentQuestion().choices;
-		var choicesHTML = ""; 								//Generate buttons for each answer choice.
-		for(var i = 0; i < choices.length; i++) {
+	displayChoices() {
+		const choices = quiz.getCurrentQuestion().choices;
+		let choicesHTML = ""; 								//Generate buttons for each answer choice.
+		for(let i = 0; i < choices.length; i++) {
 			let newButton = `<button class="generatedButton" id="btn${i}">${choices[i]}</button>`;
 			choicesHTML += newButton;
 			
@@ -188,14 +188,14 @@ var QuizUI = {
 		this.guessHandler();
 	},
 
-	populateIdWithHTML: function(id, text) {
+	populateIdWithHTML(id, text) {
 		let element = document.getElementById(id);
 		element.innerHTML = text;
 	},
-	guessHandler: function() {
-		var choices = quiz.getCurrentQuestion().choices;
-		for(var i = 0; i < choices.length; i++) {
-			var button = document.getElementById(`btn${i}`);
+	guessHandler() {
+		const choices = quiz.getCurrentQuestion().choices;
+		for(let i = 0; i < choices.length; i++) {
+			let button = document.getElementById(`btn${i}`);
 			button.onclick = function() {
 				quiz.guess(this.innerHTML);
 				QuizUI.displayNext();
