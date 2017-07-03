@@ -57,19 +57,30 @@ function sortByName() {
 
 
 // formatting of the questions
-const quizQuestions = [ 
-	new Question("Does this work?", ["Yes", "No", "Maybe?"], "Yes", "YAR! HERE BE THE SUBTEXT!", "paul"),
-	new Question("Does it really though?", ["No", "Yes"], "Yes", "YAR! HERE BE THE SUBTEXT!", "matt"),
-	new Question("No, but really, how is this thing?", ["Good!", "Borked!"], "Good!", "Yar! HERE BE THE SUBTEXT!", "matt"),
-	new Question("More example questions??", ["Yes, Test it out man!", "Nah, we're done"], "Yes, Test it out man!", "Yar! HERE BE THE SUBTEXT!", "paul"),
-	new Question("Keep going?", ["Sally Forth!", "Let's quit."], "Sally Forth!", "Yar! HERE BE THE SUBTEXT!", "paul"),
-	new Question("6th time's the charm, right?", ["Seems good for now.", "Go to hell, jackass."], "Seems good for now.", "Yar! HERE BE THE SUBTEXT!", "matt")
-];
+// const quizQuestions = [ 
+// 	new Question("Does this work?", ["Yes", "No", "Maybe?"], "Yes", "YAR! HERE BE THE SUBTEXT!", "paul"),
+// 	new Question("Does it really though?", ["No", "Yes"], "Yes", "YAR! HERE BE THE SUBTEXT!", "matt"),
+// 	new Question("No, but really, how is this thing?", ["Good!", "Borked!"], "Good!", "Yar! HERE BE THE SUBTEXT!", "matt"),
+// 	new Question("More example questions??", ["Yes, Test it out man!", "Nah, we're done"], "Yes, Test it out man!", "Yar! HERE BE THE SUBTEXT!", "paul"),
+// 	new Question("Keep going?", ["Sally Forth!", "Let's quit."], "Sally Forth!", "Yar! HERE BE THE SUBTEXT!", "paul"),
+// 	new Question("6th time's the charm, right?", ["Seems good for now.", "Go to hell, jackass."], "Seems good for now.", "Yar! HERE BE THE SUBTEXT!", "matt")
+// ];
 
-const quiz = new Quiz(quizQuestions);
+// const quiz = new Quiz(quizQuestions);
 
 
+const xhrGetQuizQuestions = new XMLHttpRequest();
+xhrGetQuizQuestions.open('GET', 'js/qzJSON.json');
+xhrGetQuizQuestions.send();
 
+let quizQuestions;
+
+xhrGetQuizQuestions.onreadystatechange = function() {
+	if(xhrGetQuizQuestions.status == 200 && xhrGetQuizQuestions.readyState == 4) {
+		quizQuestions = JSON.parse(xhrGetQuizQuestions.responseText).shift(); // TODO: Better way to do this? Write different JSON?
+
+	}
+}
 
 //Stores current player selection, used for score and such.
 
