@@ -12,7 +12,7 @@ xhrGetQuizQuestions.onreadystatechange = function() {
 }
 
 const btnDiv = document.getElementById('btn_div');
-const jockScore = document.getElementById('matt_score');
+const jockScore = document.getElementById('jock_score');
 const nerdScore = document.getElementById('nerd_score');
 const quizStartButton = document.getElementById('quiz_start');
 const questionH2 = document.getElementById('question');
@@ -39,6 +39,8 @@ function Quiz(questions) {
 	this.nerdScore = 0;
 	this.jockScore = 0;
 	this.started = false;
+	this.currentPlayerJock = false;
+	this.currentPlayerNerd = false;
 }
 
 quizStartButton.addEventListener("click", () => {
@@ -60,15 +62,77 @@ btnDiv.addEventListener("click", (e)=> {
 	
 });
 
+Quiz.prototype.guessHandler = function(guess) {
+	if(guess === quiz.getCurrentQuestion().correctAnswer) {
+		questionH2.textContent = "Correct!";
+
+		if(quiz.currentPlayerJock) {
+			quiz.jockScore += 1;
+		} else if(quiz.currentPlayerNerd) {
+			quiz.nerdScore += 1;
+		} else {
+			console.log("scoring error at guessHandler");
+		}
+		jockScore.textContent = quiz.jockScore;
+		nerdScore.textContent = quiz.nerdScore;
+	} else {
+		questionH2.textContent = "Incorrect!";
+	}
+		afterTextP.style.display = '';
+		afterTextP.textContent = quiz.getCurrentQuestion().afterText;
+		btnDiv.innerHTML = "";
+		buttonCrafter("Next Question!");
+		quiz.quizIndex += 1;
+}
+
 Quiz.prototype.buttonHandler = function(buttonText) {
 	if(!quiz.started) {
-		
+		quiz.started = true;
+		if(buttonText == "Jock") {
+			quiz.currentPlayerJock = true;
+		} else if(buttonText == "Nerd") {
+			quiz.currentPlayerNerd = true;
+		}
+		scoreboard.style.display = "";
+		QuizUI.displayNext();
+	} else if(buttonText == "Next Question!") {
+		QuizUI.displayNext();
+	} else {
+		quiz.guessHandler(buttonText);
 	}
 }
 
+Quiz.prototype.getCurrentQuestion = function() {
+	if(this.currentPlayerJock) {
+		return this.jockQuestions[this.quizIndex];
+	} else if(this.currentPlayerNerd) {
+		return this.nerdQuestions[this.quizIndex];
+	} else {
+		console.log("Error at getCurrentQuestion");
+	}
+}
+
+Quiz.prototype.isCorrectAnswer = function(choice){
+	
+};
+
 const QuizUI = {
 	displayNext() {
-		// Display next question function
+		btnDiv.innerHTML = "";
+		this.displayQuestion();
+		this.displayChoices();
+	},
+	displayQuestion() {
+		this.populateHTML(question, quiz.getCurrentQuestion().question);
+	},
+	displayChoices() {
+		const choices = quiz.getCurrentQuestion().choices;
+		for(let i = 0; i < choices.length; i++) {
+			buttonCrafter(choices[i]);
+		}
+	},
+	populateHTML(element, text) {
+		element.innerHTML = text;
 	}
 }
 
