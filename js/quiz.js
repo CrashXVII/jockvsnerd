@@ -3,6 +3,8 @@
 const xhrGetQuizQuestions = new XMLHttpRequest();
 xhrGetQuizQuestions.open('GET', 'js/qzJSON.json');
 xhrGetQuizQuestions.send();
+
+
 let quiz;
 xhrGetQuizQuestions.onreadystatechange = function() {
 	if(xhrGetQuizQuestions.status == 200 && xhrGetQuizQuestions.readyState == 4) {
@@ -23,7 +25,7 @@ const scoreboard = document.querySelector('.scoreboard');
 questionSection.style.display = 'none';
 scoreboard.style.display = 'none';
 
-
+let currentPlayer;
 
 function buttonCrafter(text) {
 	const button = document.createElement('button');
@@ -33,14 +35,19 @@ function buttonCrafter(text) {
 }
 
 function Quiz(questions) {
-	this.nerdQuestions = questions.nerdQuestions;
-	this.jockQuestions = questions.jockQuestions;
 	this.quizIndex = 0;
-	this.nerdScore = 0;
-	this.jockScore = 0;
 	this.started = false;
-	this.currentPlayerJock = false;
-	this.currentPlayerNerd = false;
+	this.nerd = {
+		questions : questions.nerdQuestions,
+		score : 0,
+		quizComplete : false 
+	};
+	this.jock = {
+		questions : questions.jockQuestions,
+		score : 0,
+		quizComplete : false
+	};
+	
 }
 
 quizStartButton.addEventListener("click", () => {
@@ -56,69 +63,78 @@ quizStartButton.addEventListener("click", () => {
 
 btnDiv.addEventListener("click", (e)=> {
 	if(e.target.tagName == 'BUTTON') {
-		let button = e.target;
-		quiz.buttonHandler(button.textContent);
+		quiz.buttonHandler(e.target.textContent);
 	}
 	
 });
 
+Quiz.prototype.playerStatusCheck = function() {
+	if(currentPlayer.questions.length == quiz.quizIndex) {
+		console.log('Player Switch');
+		return true;
+	}
+}
+
 Quiz.prototype.guessHandler = function(guess) {
 	if(guess === quiz.getCurrentQuestion().correctAnswer) {
 		questionH2.textContent = "Correct!";
-
-		if(quiz.currentPlayerJock) {
-			quiz.jockScore += 1;
-		} else if(quiz.currentPlayerNerd) {
-			quiz.nerdScore += 1;
-		} else {
-			console.log("scoring error at guessHandler");
-		}
-		jockScore.textContent = quiz.jockScore;
-		nerdScore.textContent = quiz.nerdScore;
+		currentPlayer.score += 1;
+		jockScore.textContent = quiz.jock.score;
+		nerdScore.textContent = quiz.nerd.score;
 	} else {
 		questionH2.textContent = "Incorrect!";
 	}
-		afterTextP.style.display = '';
-		afterTextP.textContent = quiz.getCurrentQuestion().afterText;
-		btnDiv.innerHTML = "";
-		buttonCrafter("Next Question!");
-		quiz.quizIndex += 1;
+	afterTextP.style.display = '';
+	afterTextP.textContent = quiz.getCurrentQuestion().afterText;
+	btnDiv.innerHTML = "";
+	quiz.quizIndex += 1;
+		
+	if (quiz.playerStatusCheck()) {
+		buttonCrafter("Next Player!");
+	} else {
+		buttonCrafter("Next Question!")
+	}
 }
 
 Quiz.prototype.buttonHandler = function(buttonText) {
 	if(!quiz.started) {
 		quiz.started = true;
 		if(buttonText == "Jock") {
-			quiz.currentPlayerJock = true;
+			currentPlayer = quiz.jock;
 		} else if(buttonText == "Nerd") {
-			quiz.currentPlayerNerd = true;
+			currentPlayer = quiz.nerd;
 		}
 		scoreboard.style.display = "";
 		QuizUI.displayNext();
 	} else if(buttonText == "Next Question!") {
 		QuizUI.displayNext();
+	} else if(buttonText == "Next Player!") {
+
 	} else {
 		quiz.guessHandler(buttonText);
 	}
 }
 
 Quiz.prototype.getCurrentQuestion = function() {
-	if(this.currentPlayerJock) {
-		return this.jockQuestions[this.quizIndex];
-	} else if(this.currentPlayerNerd) {
-		return this.nerdQuestions[this.quizIndex];
-	} else {
-		console.log("Error at getCurrentQuestion");
-	}
+	return currentPlayer.questions[quiz.quizIndex];
 }
 
-Quiz.prototype.isCorrectAnswer = function(choice){
-	
-};
+
+
+Quiz.prototype.quizStatusCheck = function() {
+	if(quiz.jock.quizComplete && quiz.nerd.quizComplete) {
+		quiz.generateGameOver();
+	} else if(quiz.jock.quizComplete) {
+		currentPlayer = quiz.nerd;
+	} else if(quiz.nerd.quizComplete) {
+		currentPlayer = quiz.jock;
+	}
+}
 
 const QuizUI = {
 	displayNext() {
 		btnDiv.innerHTML = "";
+		afterTextP.style.display = "none";
 		this.displayQuestion();
 		this.displayChoices();
 	},
@@ -132,7 +148,7 @@ const QuizUI = {
 		}
 	},
 	populateHTML(element, text) {
-		element.innerHTML = text;
+		element.textContent = text;
 	}
 }
 
