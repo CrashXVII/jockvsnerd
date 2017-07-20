@@ -61,7 +61,7 @@ quizStartButton.addEventListener("click", () => {
 
 
 
-btnDiv.addEventListener("click", (e)=> {
+btnDiv.addEventListener("click", (e) => {
 	if(e.target.tagName == 'BUTTON') {
 		quiz.buttonHandler(e.target.textContent);
 	}
@@ -129,20 +129,30 @@ Quiz.prototype.playerSwitch = function() {
 	quiz.quizIndex = 0;
 }
 
-Quiz.prototype.getCurrentQuestion = function() {
-	return currentPlayer.questions[quiz.quizIndex];
-}
-
-Quiz.prototype.generateEndGameScreen = function() {
-	console.log('Game Over Man!');
-}
-
-
 Quiz.prototype.quizStatusCheck = function() {
 	if(quiz.jock.quizComplete && quiz.nerd.quizComplete) {
 		return true;
 	}
 }
+
+Quiz.prototype.getCurrentQuestion = function() {
+	return currentPlayer.questions[quiz.quizIndex];
+}
+
+Quiz.prototype.generateEndGameScreen = function() {
+	questionH2.textContent = "Game Over!";
+	if(quiz.nerd.score > quiz.jock.score) {
+		afterTextP.textContent = "The Nerd Wins!";
+	} else if(quiz.nerd.score < quiz.jock.score) {
+		afterTextP.textContent = "The Jock Wins!";
+	} else {
+		afterTextP.textContent = "Tie Game! Jacob Wins!";
+	}
+	console.log('Game Over Man!');
+}
+
+
+
 
 const QuizUI = {
 	displayNext() {
@@ -164,7 +174,3 @@ const QuizUI = {
 		element.textContent = text;
 	}
 }
-
-
-
-
