@@ -70,7 +70,7 @@ btnDiv.addEventListener("click", (e)=> {
 
 Quiz.prototype.playerStatusCheck = function() {
 	if(currentPlayer.questions.length == quiz.quizIndex) {
-		console.log('Player Switch');
+		currentPlayer.quizComplete = true;
 		return true;
 	}
 }
@@ -90,7 +90,11 @@ Quiz.prototype.guessHandler = function(guess) {
 	quiz.quizIndex += 1;
 		
 	if (quiz.playerStatusCheck()) {
+		if(quiz.quizStatusCheck()) {
+			quiz.generateEndGameScreen();
+		} else {
 		buttonCrafter("Next Player!");
+		}
 	} else {
 		buttonCrafter("Next Question!")
 	}
@@ -109,25 +113,34 @@ Quiz.prototype.buttonHandler = function(buttonText) {
 	} else if(buttonText == "Next Question!") {
 		QuizUI.displayNext();
 	} else if(buttonText == "Next Player!") {
-
+		quiz.playerSwitch();
+		QuizUI.displayNext();
 	} else {
 		quiz.guessHandler(buttonText);
 	}
+}
+
+Quiz.prototype.playerSwitch = function() {
+	if(currentPlayer == quiz.nerd) {
+		currentPlayer = quiz.jock;
+	} else if(currentPlayer == quiz.jock) {
+		currentPlayer = quiz.nerd;
+	}
+	quiz.quizIndex = 0;
 }
 
 Quiz.prototype.getCurrentQuestion = function() {
 	return currentPlayer.questions[quiz.quizIndex];
 }
 
+Quiz.prototype.generateEndGameScreen = function() {
+	console.log('Game Over Man!');
+}
 
 
 Quiz.prototype.quizStatusCheck = function() {
 	if(quiz.jock.quizComplete && quiz.nerd.quizComplete) {
-		quiz.generateGameOver();
-	} else if(quiz.jock.quizComplete) {
-		currentPlayer = quiz.nerd;
-	} else if(quiz.nerd.quizComplete) {
-		currentPlayer = quiz.jock;
+		return true;
 	}
 }
 
