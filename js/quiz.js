@@ -1,5 +1,3 @@
-
-
 const xhrGetQuizQuestions = new XMLHttpRequest();
 xhrGetQuizQuestions.open('GET', 'js/qzJSON.json');
 xhrGetQuizQuestions.send();
@@ -21,6 +19,9 @@ const questionH2 = document.getElementById('question');
 const afterTextP = document.getElementById('question_afterText');
 const questionSection = document.querySelector('.question_section');
 const scoreboard = document.querySelector('.scoreboard');
+const jockLogo = document.getElementById("jock");
+const nerdLogo = document.getElementById('nerd');
+const vsLogo = document.getElementById('vs');
 
 questionSection.style.display = 'none';
 scoreboard.style.display = 'none';
@@ -55,6 +56,9 @@ quizStartButton.addEventListener("click", () => {
 	quizStartButton.style.display = 'none';
 	afterTextP.style.display = 'none';
 	questionH2.textContent = "Who wants to go first?";
+	jockLogo.classList.remove("jock_animate");
+	nerdLogo.classList.remove("nerd_animate");
+	vsLogo.classList.remove("vs_animate");
 	buttonCrafter("Jock");
 	buttonCrafter('Nerd');
 });

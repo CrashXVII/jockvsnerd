@@ -1,7 +1,8 @@
-h1 {
+.header {
 	text-align: center;
 	font-family: 'Freckle Face', cursive;
 	font-size: 3em;
+	padding: 1em 0;
 }
 
 .wrapper {
@@ -76,8 +77,6 @@ button:hover, button:focus {
 	margin-top: 1.5em;
 }
 
-
-
 .quizButton, .generatedButton {
 	background-color: #718FEF;
 }
@@ -85,3 +84,47 @@ button:hover, button:focus {
 .generatedButton {
 	margin: 0 0.5em;
 }
+
+/*** animations ***/
+.header span {
+	display: inline-block;
+	transition: transform 0.5s ease-in;
+}
+
+.jock_animate {
+	transform: translateX(-800px);
+}
+
+.vs_animate {
+	transform: translateY(-500px);
+}
+
+.nerd_animate {
+	transform: translateX(800px);
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
