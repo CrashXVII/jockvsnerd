@@ -56,9 +56,6 @@ quizStartButton.addEventListener("click", () => {
 	quizStartButton.style.display = 'none';
 	afterTextP.style.display = 'none';
 	questionH2.textContent = "Who wants to go first?";
-	jockLogo.classList.remove("jock_animate");
-	nerdLogo.classList.remove("nerd_animate");
-	vsLogo.classList.remove("vs_animate");
 	buttonCrafter("Jock");
 	buttonCrafter('Nerd');
 });
