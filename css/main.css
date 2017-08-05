@@ -2,7 +2,7 @@
 	text-align: center;
 	font-family: 'Freckle Face', cursive;
 	font-size: 5em;
-	padding: 20px 0 10px 0;
+	padding: 100px 0;
 }
 
 .wrapper {
@@ -61,16 +61,15 @@ button {
   	        user-select: none;
   border: 1px solid transparent;
   border-radius: 4px;
-  transition: .5s;
+  
 }
 
 button:hover, button:focus {
 	background-color: orange;
 	text-decoration: none;
 	color: #fff;
-	box-shadow: 0 0 2em gold;
-	font-size: 1.55em;
 }
+
 
 
 
@@ -80,6 +79,12 @@ button:hover, button:focus {
 
 .generatedButton {
 	margin: 0 0.5em;
+	transition: .5s;
+}
+
+.generatedButton:hover, .generatedButton:focus {
+	box-shadow: 0 0 2em gold;
+	transform: scale(1.2);
 }
 
 /*** animations ***/
