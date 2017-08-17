@@ -4,8 +4,8 @@ xhrGetQuizQuestions.send();
 
 
 let quiz;
-xhrGetQuizQuestions.onreadystatechange = function() {
-	if(xhrGetQuizQuestions.status == 200 && xhrGetQuizQuestions.readyState == 4) {
+xhrGetQuizQuestions.onreadystatechange = function () {
+	if (xhrGetQuizQuestions.status == 200 && xhrGetQuizQuestions.readyState == 4) {
 		quizQuestions = JSON.parse(xhrGetQuizQuestions.responseText).shift(); // TODO: Better way to do this? Write different JSON?
 		quiz = new Quiz(quizQuestions);
 	}
@@ -39,16 +39,16 @@ function Quiz(questions) {
 	this.quizIndex = 0;
 	this.started = false;
 	this.nerd = {
-		questions : questions.nerdQuestions,
-		score : 0,
-		quizComplete : false 
+		questions: questions.nerdQuestions,
+		score: 0,
+		quizComplete: false
 	};
 	this.jock = {
-		questions : questions.jockQuestions,
-		score : 0,
-		quizComplete : false
+		questions: questions.jockQuestions,
+		score: 0,
+		quizComplete: false
 	};
-	
+
 }
 
 quizStartButton.addEventListener("click", () => {
@@ -63,21 +63,21 @@ quizStartButton.addEventListener("click", () => {
 
 
 btnDiv.addEventListener("click", (e) => {
-	if(e.target.tagName == 'BUTTON') {
+	if (e.target.tagName == 'BUTTON') {
 		quiz.buttonHandler(e.target.textContent);
 	}
-	
+
 });
 
-Quiz.prototype.playerStatusCheck = function() {
-	if(currentPlayer.questions.length == quiz.quizIndex) {
+Quiz.prototype.playerStatusCheck = function () {
+	if (currentPlayer.questions.length == quiz.quizIndex) {
 		currentPlayer.quizComplete = true;
 		return true;
 	}
 }
 
-Quiz.prototype.guessHandler = function(guess) {
-	if(guess === quiz.getCurrentQuestion().correctAnswer) {
+Quiz.prototype.guessHandler = function (guess) {
+	if (guess === quiz.getCurrentQuestion().correctAnswer) {
 		questionH2.textContent = "Correct!";
 		currentPlayer.score += 1;
 		jockScore.textContent = quiz.jock.score;
@@ -89,31 +89,31 @@ Quiz.prototype.guessHandler = function(guess) {
 	afterTextP.textContent = quiz.getCurrentQuestion().afterText;
 	btnDiv.innerHTML = "";
 	quiz.quizIndex += 1;
-		
+
 	if (quiz.playerStatusCheck()) {
-		if(quiz.quizStatusCheck()) {
+		if (quiz.quizStatusCheck()) {
 			quiz.generateEndGameScreen();
 		} else {
-		buttonCrafter("Next Player!");
+			buttonCrafter("Next Player!");
 		}
 	} else {
 		buttonCrafter("Next Question!")
 	}
 }
 
-Quiz.prototype.buttonHandler = function(buttonText) {
-	if(!quiz.started) {
+Quiz.prototype.buttonHandler = function (buttonText) {
+	if (!quiz.started) {
 		quiz.started = true;
-		if(buttonText == "Jock") {
+		if (buttonText == "Jock") {
 			currentPlayer = quiz.jock;
-		} else if(buttonText == "Nerd") {
+		} else if (buttonText == "Nerd") {
 			currentPlayer = quiz.nerd;
 		}
 		scoreboard.style.display = "";
 		QuizUI.displayNext();
-	} else if(buttonText == "Next Question!") {
+	} else if (buttonText == "Next Question!") {
 		QuizUI.displayNext();
-	} else if(buttonText == "Next Player!") {
+	} else if (buttonText == "Next Player!") {
 		quiz.playerSwitch();
 		QuizUI.displayNext();
 	} else {
@@ -121,30 +121,30 @@ Quiz.prototype.buttonHandler = function(buttonText) {
 	}
 }
 
-Quiz.prototype.playerSwitch = function() {
-	if(currentPlayer == quiz.nerd) {
+Quiz.prototype.playerSwitch = function () {
+	if (currentPlayer == quiz.nerd) {
 		currentPlayer = quiz.jock;
-	} else if(currentPlayer == quiz.jock) {
+	} else if (currentPlayer == quiz.jock) {
 		currentPlayer = quiz.nerd;
 	}
 	quiz.quizIndex = 0;
 }
 
-Quiz.prototype.quizStatusCheck = function() {
-	if(quiz.jock.quizComplete && quiz.nerd.quizComplete) {
+Quiz.prototype.quizStatusCheck = function () {
+	if (quiz.jock.quizComplete && quiz.nerd.quizComplete) {
 		return true;
 	}
 }
 
-Quiz.prototype.getCurrentQuestion = function() {
+Quiz.prototype.getCurrentQuestion = function () {
 	return currentPlayer.questions[quiz.quizIndex];
 }
 
-Quiz.prototype.generateEndGameScreen = function() {
+Quiz.prototype.generateEndGameScreen = function () {
 	questionH2.textContent = "Game Over!";
-	if(quiz.nerd.score > quiz.jock.score) {
+	if (quiz.nerd.score > quiz.jock.score) {
 		afterTextP.textContent = "The Nerd Wins!";
-	} else if(quiz.nerd.score < quiz.jock.score) {
+	} else if (quiz.nerd.score < quiz.jock.score) {
 		afterTextP.textContent = "The Jock Wins!";
 	} else {
 		afterTextP.textContent = "Tie Game! Jacob Wins!";
@@ -167,7 +167,7 @@ const QuizUI = {
 	},
 	displayChoices() {
 		const choices = quiz.getCurrentQuestion().choices;
-		for(let i = 0; i < choices.length; i++) {
+		for (let i = 0; i < choices.length; i++) {
 			buttonCrafter(choices[i]);
 		}
 	},
